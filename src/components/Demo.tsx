@@ -1,16 +1,30 @@
-//import {useState, useEffect} from 'react'
-
+import { useState } from "react";
 import link from "../assets/link.svg";
-
-// import copy, linkIcon, loader, tick from '../assets/icons'
+import { useLazyGetSummaryQuery } from "../services/article";
 
 const Demo = () => {
+  const [article, setArticle] = useState({
+    url: "",
+    summary: "",
+  });
+
+  const [getSummary] = useLazyGetSummaryQuery();
+
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    const { data } = await getSummary({ url: article.url });
+    if (data?.summary) {
+      const newArticle = { ...article, summary: data.summary };
+      setArticle(newArticle);
+    }
+  };
+
   return (
     <section className="mt-16 w-full max-w-xl">
       <div className="flex flex-col w-full gap-2">
         <form
           className="relative flex justify-center -items-center"
-          onSubmit={() => {}}
+          onSubmit={handleSubmit}
         >
           <img
             src={link}
@@ -20,8 +34,10 @@ const Demo = () => {
           <input
             type="url"
             placeholder="Enter a Url"
-            value=""
-            onChange={() => {}}
+            value={article.url}
+            onChange={(event) =>
+              setArticle({ ...article, url: event.target.value })
+            }
             required
             className="url_input peer"
           />
