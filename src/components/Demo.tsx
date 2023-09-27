@@ -1,21 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import link from "../assets/link.svg";
 import { useLazyGetSummaryQuery } from "../services/article";
 
+interface IArticle {
+  url: string;
+  summary: string;
+}
+
 const Demo = () => {
-  const [article, setArticle] = useState({
+  const [article, setArticle] = useState<IArticle>({
     url: "",
     summary: "",
   });
 
+  const [allArticles, setAllArticles] = useState<IArticle[]>([]); // [article1, article2, article3
+
   const [getSummary] = useLazyGetSummaryQuery();
+
+  useEffect(() => {
+    const articlesFromLocalStorage = JSON.parse(
+      localStorage.getItem("articles") || "",
+    );
+    if (articlesFromLocalStorage) {
+      setAllArticles(articlesFromLocalStorage);
+    }
+  }, []);
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     const { data } = await getSummary({ url: article.url });
     if (data?.summary) {
       const newArticle = { ...article, summary: data.summary };
+      const updatedAllArticles = [newArticle, ...allArticles];
       setArticle(newArticle);
+      setAllArticles(updatedAllArticles);
+      localStorage.setItem("articles", JSON.stringify(updatedAllArticles));
     }
   };
 
