@@ -111,7 +111,7 @@ const Demo = () => {
               <span>
                 {"data" in error && typeof error.data === "string"
                   ? error.data
-                  : "Error without data"}
+                  : ""}
               </span>
             </p>
           ) : (
