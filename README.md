@@ -6,3 +6,4 @@ Designed for the modern reader, this innovative tool distills sprawling articles
 
 Harnessing the efficiency of **Vite**, alongside the robust combination of **React, Redux**, and **Tailwind.css**, "Summarize" provides a blazing-fast development experience and a sleek, intuitive user interface. 
 
+Try it out: [OpenAI Article Summarizer](https://superlative-fudge-8d14e1.netlify.app)
